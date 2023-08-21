@@ -1,0 +1,64 @@
+syntax="proto3";
+package services;
+option go_package = "../;services";
+
+message User {
+    int64 Id = 1; //用户id
+    string Name = 2; //用户名称
+    int64 FollowCount = 3; //关注总数
+    int64 FollowerCount = 4; //粉丝总数
+    bool IsFollow = 5; //true-已关注，false-未关注
+    string Avatar = 6; //用户头像
+    string BackgroundImage = 7; //用户个人页顶部大图
+    string Signature = 8; //个人简介
+    int64 TotalFavorited = 9; //获赞数量
+    int64 WorkCount = 10; //作品数量
+    int64 FavoriteCount = 11; //点赞数量
+  }
+
+message DouyinUserRegisterRequest {
+    // @inject_tag: json:"username", form:"username"
+    string Username = 1;
+    // @inject_tag: json:"password", form:"password"
+    string Password = 2;
+}
+
+message DouyinUserRegisterResponse {
+    int32 StatusCode = 1;
+    string StatusMsg = 2;
+    int64 UserId = 3;
+    string Token = 4;
+}
+
+message DouyinUserLoginRequest {
+    // @inject_tag: json:"username", form:"username"
+    string Username = 1;
+    // @inject_tag: json:"password", form:"password"
+    string Password = 2;
+}
+
+message DouyinUserLoginResponse {
+    int32 StatusCode = 1;
+    string StatusMsg = 2;
+    int64 UserId = 3;
+    string Token = 4;
+}
+
+message DouyinUserRequest {
+    // @inject_tag: json:"uid", form:"uid"
+    int64 UserId = 1; //用户id
+    // @inject_tag: json:"utoken", form:"utoken"
+    string Token = 2; //用户鉴权token
+  }
+  
+  message DouyinUserResponse {
+    int32 StatusCode = 1; //状态码 0-成功，其他值-失败
+    string StatusMsg = 2; //返回状态描述
+    User User = 3; //用户信息
+  }
+
+service UserService {
+    rpc Login(DouyinUserLoginRequest) returns(DouyinUserLoginResponse);
+    rpc Register(DouyinUserRegisterRequest) returns(DouyinUserRegisterResponse);
+    rpc UserInfo(DouyinUserRequest) returns(DouyinUserResponse);
+}
