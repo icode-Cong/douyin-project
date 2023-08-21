@@ -1,0 +1,86 @@
+syntax="proto3";
+package userService;
+option go_package = "./;userService";
+
+message User {
+    // @inject_tag: json:"id", form:"id"
+    int64 Id = 1; 
+    // @inject_tag: json:"name", form:"name"
+    string Name = 2; 
+    // @inject_tag: json:"follow_count", form:"follow_count"
+    int64 FollowCount = 3; 
+    // @inject_tag: json:"follower_count", form:"follower_count"
+    int64 FollowerCount = 4; 
+    // @inject_tag: json:"is_follow", form:"is_follow"
+    bool IsFollow = 5; 
+    // @inject_tag: json:"avatar", form:"avatar"
+    string Avatar = 6; 
+    // @inject_tag: json:"background_image", form:"background_image"
+    string BackgroundImage = 7; 
+    // @inject_tag: json:"signature", form:"signature"
+    string Signature = 8; 
+    // @inject_tag: json:"total_favorited", form:"total_favorited"
+    int64 TotalFavorited = 9; 
+    // @inject_tag: json:"work_count", form:"work_count"
+    int64 WorkCount = 10; 
+    // @inject_tag: json:"favorite_count", form:"favorite_count"
+    int64 FavoriteCount = 11; 
+  }
+
+message DouyinUserRegisterRequest {
+    // @inject_tag: json:"username", form:"username"
+    string Username = 1;
+    // @inject_tag: json:"password", form:"password"
+    string Password = 2;
+}
+
+message DouyinUserRegisterResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1;
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2;
+    // @inject_tag: json:"user_id", form:"user_id"
+    int64 UserId = 3;
+    // @inject_tag: json:"token", form:"token"
+    string Token = 4;
+}
+
+message DouyinUserLoginRequest {
+    // @inject_tag: json:"username", form:"username"
+    string Username = 1;
+    // @inject_tag: json:"password", form:"password"
+    string Password = 2;
+}
+
+message DouyinUserLoginResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1;
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2;
+    // @inject_tag: json:"user_id", form:"user_id"
+    int64 UserId = 3;
+    // @inject_tag: json:"token", form:"token"
+    string Token = 4;
+}
+
+message DouyinUserRequest {
+    // @inject_tag: json:"uid", form:"uid"
+    int64 UserId = 1; 
+    // @inject_tag: json:"utoken", form:"utoken"
+    string Token = 2; 
+  }
+  
+  message DouyinUserResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; 
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; 
+    // @inject_tag: json:"user", form:"user"
+    User User = 3; 
+  }
+
+service UserService {
+    rpc Login(DouyinUserLoginRequest) returns(DouyinUserLoginResponse);
+    rpc Register(DouyinUserRegisterRequest) returns(DouyinUserRegisterResponse);
+    rpc UserInfo(DouyinUserRequest) returns(DouyinUserResponse);
+}

@@ -1,0 +1,17 @@
+syntax="proto3";
+package token;
+option go_package = "./;token";
+
+message ParseTokenToIdRequest {
+    // @inject_tag: json:"token", form:"token"
+    string token = 1;
+}
+
+message ParseTokenToIdResponse {
+    int32 userId = 1;
+}
+
+service TokenService {
+    rpc ParseTokenToId(ParseTokenToIdRequest) returns(ParseTokenToIdResponse);
+}
+
