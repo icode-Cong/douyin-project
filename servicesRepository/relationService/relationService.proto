@@ -1,0 +1,127 @@
+syntax = "proto3";
+package relationService;
+option go_package = "./;relationService";
+
+message DouyinRelationActionRequest {
+    // @inject_tag: json:"token", form:"token"
+    string Token = 1; // 用户鉴权token
+    // @inject_tag: json:"to_user_id", form:"to_user_id"
+    int64 ToUserId = 2; // 对方用户id
+    // @inject_tag: json:"action_type", form:"action_type"
+    int32 ActionType = 3; // 1-关注，2-取消关注
+}
+
+message DouyinRelationActionResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+}
+
+message DouyinRelationFollowListRequest {
+    // @inject_tag: json:"user_id", form:"user_id"
+    int64 UserId = 1; // 用户id
+    // @inject_tag: json:"token", form:"token"
+    string Token = 2; // 用户鉴权token
+}
+
+message DouyinRelationFollowListResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+    // @inject_tag: json:"user_list", form:"user_list"
+    repeated User UserList = 3; // 用户信息列表
+}
+
+message DouyinRelationFollowerListRequest {
+    // @inject_tag: json:"user_id", form:"user_id"
+    int64 UserId = 1; // 用户id
+    // @inject_tag: json:"token", form:"token"
+    string Token = 2; // 用户鉴权token
+}
+
+message DouyinRelationFollowerListResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+    // @inject_tag: json:"user_list", form:"user_list"
+    repeated User UserList = 3; // 用户列表
+}
+
+message User {
+    // @inject_tag: json:"id"
+    int64 Id = 1; // 用户id
+    // @inject_tag: json:"name"
+    string Name = 2; // 用户名称
+    // @inject_tag: json:"follow_count"
+    int64 FollowCount = 3; // 关注总数
+    // @inject_tag: json:"follower_count"
+    int64 FollowerCount = 4; // 粉丝总数
+    // @inject_tag: json:"is_follow"
+    bool IsFollow = 5; // true-已关注，false-未关注
+    // @inject_tag: json:"avatar"
+    string Avatar = 6; //用户头像
+    // @inject_tag: json:"background_image"
+    string BackgroundImage = 7; //用户个人页顶部大图
+    // @inject_tag: json:"signature"
+    string Signature = 8; //个人简介
+    // @inject_tag: json:"total_favorited"
+    int64 TotalFavorited = 9; //获赞数量
+    // @inject_tag: json:"work_count"
+    int64 WorkCount = 10; //作品数量
+    // @inject_tag: json:"favorite_count"
+    int64 FavoriteCount = 11; //点赞数量
+}
+
+message DouyinRelationFriendListRequest {
+    // @inject_tag: json:"user_id", form:"user_id"
+    int64 UserId = 1; // 用户id
+    // @inject_tag: json:"token", form:"token"
+    string Token = 2; // 用户鉴权token
+}
+
+message DouyinRelationFriendListResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+    // @inject_tag: json:"user_list", form:"user_list"
+    repeated FriendUser UserList = 3; // 用户列表
+}
+
+message FriendUser {
+    // @inject_tag: json:"id"
+    int64 Id = 1; // 用户id
+    // @inject_tag: json:"name"
+    string Name = 2; // 用户名称
+    // @inject_tag: json:"follow_count"
+    int64 FollowCount = 3; // 关注总数
+    // @inject_tag: json:"follower_count"
+    int64 FollowerCount = 4; // 粉丝总数
+    // @inject_tag: json:"is_follow"
+    bool IsFollow = 5; // true-已关注，false-未关注
+    // @inject_tag: json:"avatar"
+    string Avatar = 6; //用户头像
+    // @inject_tag: json:"background_image"
+    string BackgroundImage = 7; //用户个人页顶部大图
+    // @inject_tag: json:"signature"
+    string Signature = 8; //个人简介
+    // @inject_tag: json:"total_favorited"
+    int64 TotalFavorited = 9; //获赞数量
+    // @inject_tag: json:"work_count"
+    int64 WorkCount = 10; //作品数量
+    // @inject_tag: json:"favorite_count"
+    int64 FavoriteCount = 11; //点赞数量
+    // @inject_tag: json:"message"
+    string Message = 12; //和该好友的最近聊天消息
+    // @inject_tag: json:"msgType"
+    int64 MsgType = 13; //message消息的类型，0 => 当前请求用户接收的消息， 1 => 当前请求用户发送的消息
+}
+service RelationService{
+  rpc RelationAction(DouyinRelationActionRequest) returns (DouyinRelationActionResponse); //关注，取消关注
+  rpc FollowList(DouyinRelationFollowListRequest) returns(DouyinRelationFollowListResponse); //关注列表
+  rpc FollowerList(DouyinRelationFollowerListRequest) returns(DouyinRelationFollowerListResponse);//粉丝列表
+  rpc FriendList(DouyinRelationFriendListRequest) returns(DouyinRelationFriendListResponse); //好友列表
+}

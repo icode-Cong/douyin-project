@@ -1,6 +1,6 @@
 syntax="proto3";
-package token;
-option go_package = "./;token";
+package tokenService;
+option go_package = "./;tokenService";
 
 message ParseTokenToIdRequest {
     // @inject_tag: json:"token", form:"token"
