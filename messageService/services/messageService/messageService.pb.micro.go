@@ -42,7 +42,7 @@ func NewMessageServiceEndpoints() []*api.Endpoint {
 // Client API for MessageService service
 
 type MessageService interface {
-	MessageList(ctx context.Context, in *DouyinMessageChatRequest, opts ...client.CallOption) (*DouyinMessageChatResponse, error)
+	MessageChat(ctx context.Context, in *DouyinMessageChatRequest, opts ...client.CallOption) (*DouyinMessageChatResponse, error)
 	MessageAction(ctx context.Context, in *DouyinMessageActionRequest, opts ...client.CallOption) (*DouyinMessageActionResponse, error)
 }
 
@@ -58,8 +58,8 @@ func NewMessageService(name string, c client.Client) MessageService {
 	}
 }
 
-func (c *messageService) MessageList(ctx context.Context, in *DouyinMessageChatRequest, opts ...client.CallOption) (*DouyinMessageChatResponse, error) {
-	req := c.c.NewRequest(c.name, "MessageService.MessageList", in)
+func (c *messageService) MessageChat(ctx context.Context, in *DouyinMessageChatRequest, opts ...client.CallOption) (*DouyinMessageChatResponse, error) {
+	req := c.c.NewRequest(c.name, "MessageService.MessageChat", in)
 	out := new(DouyinMessageChatResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -81,13 +81,13 @@ func (c *messageService) MessageAction(ctx context.Context, in *DouyinMessageAct
 // Server API for MessageService service
 
 type MessageServiceHandler interface {
-	MessageList(context.Context, *DouyinMessageChatRequest, *DouyinMessageChatResponse) error
+	MessageChat(context.Context, *DouyinMessageChatRequest, *DouyinMessageChatResponse) error
 	MessageAction(context.Context, *DouyinMessageActionRequest, *DouyinMessageActionResponse) error
 }
 
 func RegisterMessageServiceHandler(s server.Server, hdlr MessageServiceHandler, opts ...server.HandlerOption) error {
 	type messageService interface {
-		MessageList(ctx context.Context, in *DouyinMessageChatRequest, out *DouyinMessageChatResponse) error
+		MessageChat(ctx context.Context, in *DouyinMessageChatRequest, out *DouyinMessageChatResponse) error
 		MessageAction(ctx context.Context, in *DouyinMessageActionRequest, out *DouyinMessageActionResponse) error
 	}
 	type MessageService struct {
@@ -101,8 +101,8 @@ type messageServiceHandler struct {
 	MessageServiceHandler
 }
 
-func (h *messageServiceHandler) MessageList(ctx context.Context, in *DouyinMessageChatRequest, out *DouyinMessageChatResponse) error {
-	return h.MessageServiceHandler.MessageList(ctx, in, out)
+func (h *messageServiceHandler) MessageChat(ctx context.Context, in *DouyinMessageChatRequest, out *DouyinMessageChatResponse) error {
+	return h.MessageServiceHandler.MessageChat(ctx, in, out)
 }
 
 func (h *messageServiceHandler) MessageAction(ctx context.Context, in *DouyinMessageActionRequest, out *DouyinMessageActionResponse) error {

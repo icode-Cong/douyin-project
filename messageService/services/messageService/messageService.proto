@@ -52,6 +52,6 @@ message DouyinMessageActionResponse {
 }
 
 service MessageService{
-  rpc MessageList(DouyinMessageChatRequest) returns (DouyinMessageChatResponse); //聊天记录
+  rpc MessageChat(DouyinMessageChatRequest) returns (DouyinMessageChatResponse); //聊天记录
   rpc MessageAction(DouyinMessageActionRequest) returns(DouyinMessageActionResponse); //发送消息
 }
