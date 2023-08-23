@@ -1,9 +1,9 @@
 package rpcClients
 
 import (
+	etcdInit "commentService/rpcClients/etcd"
+	"commentService/services/userService"
 	"context"
-	etcdInit "favoriteService/rpcClients/etcd"
-	"favoriteService/services/userService"
 	"fmt"
 
 	"github.com/micro/go-micro/v2"
@@ -36,4 +36,12 @@ func GetUserInfo(userId int64, token string) (*userService.User, error) {
 		IsFollow:      resp.User.IsFollow,
 	}
 	return user, err
+}
+
+/*
+*
+查询user列表
+*/
+func GetUserListInfo(userIdList []int64, token string) ([]*userService.User, error) {
+	return nil, nil
 }
