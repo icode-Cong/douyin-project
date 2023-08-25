@@ -1,0 +1,13 @@
+go 1.20
+
+use (
+	./commentService
+	./favoriteService
+	./feedService
+	./gateway
+	./messageService
+	./publishService
+	./relationService
+	./tokenService
+	./userService
+)
