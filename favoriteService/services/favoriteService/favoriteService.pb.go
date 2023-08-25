@@ -26,11 +26,11 @@ type DouyinFavoriteActionRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"token", form:"token"
-	Token string `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"` // 用户鉴权token
+	Token string `protobuf:"bytes,1,opt,name=Token,proto3" json:"token" form:"token"` // 用户鉴权token
 	// @inject_tag: json:"video_id", form:"video_id"
-	VideoId int64 `protobuf:"varint,2,opt,name=VideoId,proto3" json:"VideoId,omitempty"` // 视频id
+	VideoId int64 `protobuf:"varint,2,opt,name=VideoId,proto3" json:"video_id" form:"video_id"` // 视频id
 	// @inject_tag: json:"action_type", form:"action_type"
-	ActionType int32 `protobuf:"varint,3,opt,name=ActionType,proto3" json:"ActionType,omitempty"` // 1-点赞，2-取消点赞
+	ActionType int32 `protobuf:"varint,3,opt,name=ActionType,proto3" json:"action_type" form:"action_type"` // 1-点赞，2-取消点赞
 }
 
 func (x *DouyinFavoriteActionRequest) Reset() {
@@ -92,9 +92,9 @@ type DouyinFavoriteActionResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"status_code", form:"status_code"
-	StatusCode int32 `protobuf:"varint,1,opt,name=StatusCode,proto3" json:"StatusCode,omitempty"` // 状态码，0-成功，其他值-失败
+	StatusCode int32 `protobuf:"varint,1,opt,name=StatusCode,proto3" json:"status_code" form:"status_code"` // 状态码，0-成功，其他值-失败
 	// @inject_tag: json:"status_msg", form:"status_msg"
-	StatusMsg string `protobuf:"bytes,2,opt,name=StatusMsg,proto3" json:"StatusMsg,omitempty"` // 返回状态描述
+	StatusMsg string `protobuf:"bytes,2,opt,name=StatusMsg,proto3" json:"status_msg" form:"status_msg"` // 返回状态描述
 }
 
 func (x *DouyinFavoriteActionResponse) Reset() {
@@ -149,9 +149,9 @@ type DouyinFavoriteListRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"user_id", form:"user_id"
-	UserId int64 `protobuf:"varint,1,opt,name=UserId,proto3" json:"UserId,omitempty"` // 用户id
+	UserId int64 `protobuf:"varint,1,opt,name=UserId,proto3" json:"user_id" form:"user_id"` // 用户id
 	// @inject_tag: json:"token", form:"token"
-	Token string `protobuf:"bytes,2,opt,name=Token,proto3" json:"Token,omitempty"` // 用户鉴权token
+	Token string `protobuf:"bytes,2,opt,name=Token,proto3" json:"token" form:"token"` // 用户鉴权token
 }
 
 func (x *DouyinFavoriteListRequest) Reset() {
@@ -206,11 +206,11 @@ type DouyinFavoriteListResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"status_code", form:"status_code"
-	StatusCode int32 `protobuf:"varint,1,opt,name=StatusCode,proto3" json:"StatusCode,omitempty"` // 状态码，0-成功，其他值-失败
+	StatusCode int32 `protobuf:"varint,1,opt,name=StatusCode,proto3" json:"status_code" form:"status_code"` // 状态码，0-成功，其他值-失败
 	// @inject_tag: json:"status_msg", form:"status_msg"
-	StatusMsg string `protobuf:"bytes,2,opt,name=StatusMsg,proto3" json:"StatusMsg,omitempty"` // 返回状态描述
+	StatusMsg string `protobuf:"bytes,2,opt,name=StatusMsg,proto3" json:"status_msg" form:"status_msg"` // 返回状态描述
 	// @inject_tag: json:"video_list", form:"video_list"
-	VideoList []*Video `protobuf:"bytes,3,rep,name=VideoList,proto3" json:"VideoList,omitempty"` // 用户点赞视频列表
+	VideoList []*Video `protobuf:"bytes,3,rep,name=VideoList,proto3" json:"video_list" form:"video_list"` // 用户点赞视频列表
 }
 
 func (x *DouyinFavoriteListResponse) Reset() {
@@ -272,21 +272,21 @@ type Video struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"id"
-	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"` // 视频唯一标识
+	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"id"` // 视频唯一标识
 	// @inject_tag: json:"author"
-	Author *User `protobuf:"bytes,2,opt,name=Author,proto3" json:"Author,omitempty"` // 视频作者信息
+	Author *User `protobuf:"bytes,2,opt,name=Author,proto3" json:"author"` // 视频作者信息
 	// @inject_tag: json:"play_url"
-	PlayUrl string `protobuf:"bytes,3,opt,name=PlayUrl,proto3" json:"PlayUrl,omitempty"` // 视频播放地址
+	PlayUrl string `protobuf:"bytes,3,opt,name=PlayUrl,proto3" json:"play_url"` // 视频播放地址
 	// @inject_tag: json:"cover_url"
-	CoverUrl string `protobuf:"bytes,4,opt,name=CoverUrl,proto3" json:"CoverUrl,omitempty"` // 视频封面地址
+	CoverUrl string `protobuf:"bytes,4,opt,name=CoverUrl,proto3" json:"cover_url"` // 视频封面地址
 	// @inject_tag: json:"favorite_count"
-	FavoriteCount int64 `protobuf:"varint,5,opt,name=FavoriteCount,proto3" json:"FavoriteCount,omitempty"` // 视频的点赞总数
+	FavoriteCount int64 `protobuf:"varint,5,opt,name=FavoriteCount,proto3" json:"favorite_count"` // 视频的点赞总数
 	// @inject_tag: json:"comment_count"
-	CommentCount int64 `protobuf:"varint,6,opt,name=CommentCount,proto3" json:"CommentCount,omitempty"` // 视频的评论总数
+	CommentCount int64 `protobuf:"varint,6,opt,name=CommentCount,proto3" json:"comment_count"` // 视频的评论总数
 	// @inject_tag: json:"is_favorite"
-	IsFavorite bool `protobuf:"varint,7,opt,name=IsFavorite,proto3" json:"IsFavorite,omitempty"` // true-已点赞，false-未点赞
+	IsFavorite bool `protobuf:"varint,7,opt,name=IsFavorite,proto3" json:"is_favorite"` // true-已点赞，false-未点赞
 	// @inject_tag: json:"title"
-	Title string `protobuf:"bytes,8,opt,name=Title,proto3" json:"Title,omitempty"` // 视频标题
+	Title string `protobuf:"bytes,8,opt,name=Title,proto3" json:"title"` // 视频标题
 }
 
 func (x *Video) Reset() {
@@ -383,27 +383,27 @@ type User struct {
 	unknownFields protoimpl.UnknownFields
 
 	// @inject_tag: json:"id"
-	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"` // 用户id
+	Id int64 `protobuf:"varint,1,opt,name=Id,proto3" json:"id"` // 用户id
 	// @inject_tag: json:"name"
-	Name string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"` // 用户名称
+	Name string `protobuf:"bytes,2,opt,name=Name,proto3" json:"name"` // 用户名称
 	// @inject_tag: json:"follow_count"
-	FollowCount int64 `protobuf:"varint,3,opt,name=FollowCount,proto3" json:"FollowCount,omitempty"` // 关注总数
+	FollowCount int64 `protobuf:"varint,3,opt,name=FollowCount,proto3" json:"follow_count"` // 关注总数
 	// @inject_tag: json:"follower_count"
-	FollowerCount int64 `protobuf:"varint,4,opt,name=FollowerCount,proto3" json:"FollowerCount,omitempty"` // 粉丝总数
+	FollowerCount int64 `protobuf:"varint,4,opt,name=FollowerCount,proto3" json:"follower_count"` // 粉丝总数
 	// @inject_tag: json:"is_follow"
-	IsFollow bool `protobuf:"varint,5,opt,name=IsFollow,proto3" json:"IsFollow,omitempty"` // true-已关注，false-未关注
+	IsFollow bool `protobuf:"varint,5,opt,name=IsFollow,proto3" json:"is_follow"` // true-已关注，false-未关注
 	// @inject_tag: json:"avatar"
-	Avatar string `protobuf:"bytes,6,opt,name=Avatar,proto3" json:"Avatar,omitempty"` //用户头像
+	Avatar string `protobuf:"bytes,6,opt,name=Avatar,proto3" json:"avatar"` //用户头像
 	// @inject_tag: json:"background_image"
-	BackgroundImage string `protobuf:"bytes,7,opt,name=BackgroundImage,proto3" json:"BackgroundImage,omitempty"` //用户个人页顶部大图
+	BackgroundImage string `protobuf:"bytes,7,opt,name=BackgroundImage,proto3" json:"background_image"` //用户个人页顶部大图
 	// @inject_tag: json:"signature"
-	Signature string `protobuf:"bytes,8,opt,name=Signature,proto3" json:"Signature,omitempty"` //个人简介
+	Signature string `protobuf:"bytes,8,opt,name=Signature,proto3" json:"signature"` //个人简介
 	// @inject_tag: json:"total_favorited"
-	TotalFavorited int64 `protobuf:"varint,9,opt,name=TotalFavorited,proto3" json:"TotalFavorited,omitempty"` //获赞数量
+	TotalFavorited int64 `protobuf:"varint,9,opt,name=TotalFavorited,proto3" json:"total_favorited"` //获赞数量
 	// @inject_tag: json:"work_count"
-	WorkCount int64 `protobuf:"varint,10,opt,name=WorkCount,proto3" json:"WorkCount,omitempty"` //作品数量
+	WorkCount int64 `protobuf:"varint,10,opt,name=WorkCount,proto3" json:"work_count"` //作品数量
 	// @inject_tag: json:"favorite_count"
-	FavoriteCount int64 `protobuf:"varint,11,opt,name=FavoriteCount,proto3" json:"FavoriteCount,omitempty"` //点赞数量
+	FavoriteCount int64 `protobuf:"varint,11,opt,name=FavoriteCount,proto3" json:"favorite_count"` //点赞数量
 }
 
 func (x *User) Reset() {
