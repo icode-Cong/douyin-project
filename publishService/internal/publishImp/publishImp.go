@@ -108,6 +108,35 @@ func (*PublishService) PublishList(ctx context.Context, request *publishService.
 	return nil
 }
 
+func (*PublishService) GetAuthorId(ctx context.Context, request *publishService.GetAuthorIdRequest, response *publishService.GetAuthorIdResponse) error {
+	videoId := request.VideoId
+
+	video, err := models.NewVideoDaoInstance().FindVideoById(videoId)
+	if err != nil {
+		response.StatusCode = -1
+		response.StatusMsg = "查询作者Id失败"
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "查询作者Id成功"
+	response.AuthorId = video.UserId
+	return nil
+}
+
+func (*PublishService) GetVideoInfo(ctx context.Context, request *publishService.GetVideoInfoRequest, response *publishService.GetVideoInfoResponse) error {
+	videoId := request.VideoId
+
+	video, err := models.NewVideoDaoInstance().FindVideoById(videoId)
+	if err != nil {
+		response.StatusCode = -1
+		response.StatusMsg = "查询视频失败"
+	}
+	userInfo, _ := rpcClients.GetUserInfo(video.UserId, "")
+	response.StatusCode = 0
+	response.StatusMsg = "查询视频成功"
+	response.VideoInfo = BuildVideo(video, userInfo, true)
+	return nil
+}
+
 func BuildVideo(video *models.Video, user *userService.User, isFavorite bool) *publishService.Video {
 	return &publishService.Video{
 		Id:            video.VideoId,

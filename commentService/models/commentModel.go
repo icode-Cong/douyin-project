@@ -12,7 +12,7 @@ type Comment struct {
 	VideoId   int64
 	Content   string
 	CreateAt  time.Time
-	DeletedAt time.Time
+	DeletedAt *time.Time
 }
 
 func (Comment) TableName() string {

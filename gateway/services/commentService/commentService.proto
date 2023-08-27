@@ -1,0 +1,70 @@
+syntax = "proto3";
+package commentService;
+option go_package = "./;commentService";
+
+message DouyinCommentActionRequest {
+    // @inject_tag: json:"token", form:"token"
+    string Token = 1; // 用户鉴权token
+    // @inject_tag: json:"video_id", form:"video_id"
+    int64 VideoId = 2; // 视频id
+    // @inject_tag: json:"action_type", form:"action_type"
+    int32 ActionType = 3; // 1-发布评论，2-删除评论
+    // @inject_tag: json:"comment_text", form:"comment_text"
+    string CommentText = 4; // 用户填写的评论内容，在action_type=1的时候使用
+    // @inject_tag: json:"comment_id", form:"comment_id"
+    int64 CommentId = 5; // 要删除的评论id，在action_type=2的时候使用
+}
+
+message DouyinCommentActionResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+    // @inject_tag: json:"comment", form:"comment"
+    Comment Comment = 3; // 评论成功返回评论内容，不需要重新拉取整个列表
+}
+
+message Comment {
+    // @inject_tag: json:"id"
+    int64 Id = 1; // 视频评论id
+    // @inject_tag: json:"user"
+    User User =2; // 评论用户信息
+    // @inject_tag: json:"content"
+    string Content = 3; // 评论内容
+    // @inject_tag: json:"create_date"
+    string CreateDate = 4; // 评论发布日期，格式 mm-dd
+}
+
+message DouyinCommentListRequest {
+    // @inject_tag: json:"token", form:"token"
+    string Token = 1; // 用户鉴权token
+    // @inject_tag: json:"video_id", form:"video_id"
+    int64 VideoId = 2; // 视频id
+}
+
+message DouyinCommentListResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+    // @inject_tag: json:"comment_list", form:"comment_list"
+    repeated Comment CommentList = 3; // 评论列表
+}
+
+message User {
+    // @inject_tag: json:"id"
+    int64 Id = 1; // 用户id
+    // @inject_tag: json:"name"
+    string Name = 2; // 用户名称
+    // @inject_tag: json:"follow_count"
+    int64 FollowCount = 3; // 关注总数
+    // @inject_tag: json:"follower_count"
+    int64 FollowerCount = 4; // 粉丝总数
+    // @inject_tag: json:"is_follow"
+    bool IsFollow = 5; // true-已关注，false-未关注
+}
+
+service CommentService{
+  rpc CommentAction(DouyinCommentActionRequest) returns (DouyinCommentActionResponse);
+  rpc CommentList(DouyinCommentListRequest) returns(DouyinCommentListResponse);
+}

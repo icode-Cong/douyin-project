@@ -6,6 +6,8 @@ import (
 	"commentService/services/commentService"
 	"commentService/services/userService"
 	"context"
+	"fmt"
+	"sync"
 	"time"
 )
 
@@ -96,6 +98,36 @@ func (*CommentService) CommentList(ctx context.Context, request *commentService.
 		response.StatusCode = 1
 		response.StatusMsg = "获取评论列表失败"
 		return nil
+	}
+
+	// 使用协程来逐个获取关注对象的用户信息
+	// 使用通道来传递用户信息
+	commentChan := make(chan *commentService.Comment)
+	// var userList []*relationService.User
+	var wg sync.WaitGroup
+	for _, comment := range commentList {
+		wg.Add(1)
+		go func(id int64) {
+			defer wg.Done()
+			userInfo, err := rpcClients.GetUserInfo(id, request.Token)
+			if err != nil {
+				fmt.Println("[Error : 查询关注列表, 向 userService 请求用户信息失败，用户id：]", id)
+				return
+			}
+			commentChan <- BuildComment(comment, userInfo)
+		}(comment.UserId)
+	}
+
+	// 等待所有协程完成
+	go func() {
+		wg.Wait()
+		close(commentChan) // 关闭数据，表示不再写入数据
+	}()
+
+	// 收集用户信息
+	var commentRes []*commentService.Comment
+	for comment := range commentChan {
+		commentRes = append(commentRes, comment)
 	}
 
 	return nil

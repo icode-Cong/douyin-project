@@ -17,7 +17,7 @@ func main() {
 	)
 	microService := micro.NewService(
 		micro.Name("commentService"), // 微服务名字
-		micro.Address("0.0.0.0:8086"),
+		micro.Address("0.0.0.0:8091"),
 		micro.Registry(etcdReg), // etcd注册件
 		micro.Metadata(map[string]string{"protocol": "http"}),
 	)

@@ -66,10 +66,40 @@ message DouyinPublishActionResponse {
   string StatusMsg = 2; // 返回状态描述
 }
 
+message GetAuthorIdRequest {
+  // @inject_tag: json:"video_id", form:"video_id"
+  int64 VideoId = 1; // 视频Id
+}
+
+message GetAuthorIdResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; // 返回状态描述
+  // @inject_tag: json:"author_id", form:"author_id"
+  int64 AuthorId = 3; // 返回作者Id
+}
+
+message GetVideoInfoRequest {
+  // @inject_tag: json:"video_id", form:"video_id"
+  int64 VideoId = 1; // 视频Id
+}
+
+message GetVideoInfoResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; // 返回状态描述
+  // @inject_tag: json:"video_info", form:"video_info"
+  Video VideoInfo = 3; // 返回视频信息
+}
 
 
 service PublishService{
   rpc PublishList(DouyinPublishListRequest) returns (DouyinPublishListResponse);
   rpc Publish(DouyinPublishActionRequest) returns(DouyinPublishActionResponse);
+
+  rpc GetAuthorId(GetAuthorIdRequest) returns(GetAuthorIdResponse);
+  rpc GetVideoInfo(GetVideoInfoRequest) returns(GetVideoInfoResponse);
 }
 

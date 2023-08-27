@@ -175,3 +175,104 @@ func BuildUser(item *models.User, isFollow bool) *userService.User {
 	}
 	return &user
 }
+
+func (*UserService) UpdateFollowCount(ctx context.Context, request *userService.DouyinUpdateFollowCountRequest, response *userService.DouyinUpdateFollowCountResponse) error {
+	userId := request.UserId
+	count := request.Count
+	actionType := request.ActionType
+
+	if actionType == 1 {
+		models.NewUserDaoInstance().AddFollowingCount(userId, int32(count))
+	} else if actionType == 2 {
+		models.NewUserDaoInstance().ReduceFollowingCount(userId, int32(count))
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "修改关注数成功"
+	return nil
+}
+func (*UserService) UpdateFollowerCount(ctx context.Context, request *userService.DouyinUpdateFollowerCountRequest, response *userService.DouyinUpdateFollowerCountResponse) error {
+	userId := request.UserId
+	count := request.Count
+	actionType := request.ActionType
+
+	if actionType == 1 {
+		models.NewUserDaoInstance().AddFollowerCount(userId, int32(count))
+	} else if actionType == 2 {
+		models.NewUserDaoInstance().ReduceFollowerCount(userId, int32(count))
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "修改粉丝数成功"
+	return nil
+}
+
+func (*UserService) UpdateTotalFavorited(ctx context.Context, request *userService.DouyinUpdateTotalFavoritedRequest, response *userService.DouyinUpdateTotalFavoritedResponse) error {
+	userId := request.UserId
+	count := request.Count
+	actionType := request.ActionType
+
+	if actionType == 1 {
+		models.NewUserDaoInstance().AddTotalFavorited(userId, int32(count))
+	} else if actionType == 2 {
+		models.NewUserDaoInstance().ReduceTotalFavorited(userId, int32(count))
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "修改获赞数量成功"
+	return nil
+}
+
+func (*UserService) UpdateFavoriteCount(ctx context.Context, request *userService.DouyinUpdateFavoriteCountRequest, response *userService.DouyinUpdateFavoriteCountResponse) error {
+	userId := request.UserId
+	count := request.Count
+	actionType := request.ActionType
+
+	if actionType == 1 {
+		models.NewUserDaoInstance().AddFavoriteCount(userId, int32(count))
+	} else if actionType == 2 {
+		models.NewUserDaoInstance().ReduceFavoriteCount(userId, int32(count))
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "修改点赞数量成功"
+	return nil
+}
+
+func (*UserService) UpdateWorkCount(ctx context.Context, request *userService.DouyinUpdateWorkCountRequest, response *userService.DouyinUpdateWorkCountResponse) error {
+	userId := request.UserId
+	count := request.Count
+	actionType := request.ActionType
+
+	if actionType == 1 {
+		models.NewUserDaoInstance().AddWorkCount(userId, int32(count))
+	} else if actionType == 2 {
+		models.NewUserDaoInstance().ReduceWorkCount(userId, int32(count))
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "修改作品数量成功"
+	return nil
+}
+func (*UserService) MultiUserInfo(ctx context.Context, request *userService.DouyinMultiUserInfoRequest, response *userService.DouyinMultiUserInfoResponse) error {
+	userIds := request.UserId
+	var userResult []*userService.User
+	if len(userIds) == 0 {
+		response.StatusCode = 0
+		response.StatusMsg = "查询用户数量为0"
+		response.Users = userResult
+		return nil
+	}
+	users, _ := models.NewUserDaoInstance().GetUsersByIds(userIds)
+	for _, user := range users {
+		userResult = append(userResult, &userService.User{
+			Id:             user.UserId,
+			Name:           user.Name,
+			FollowCount:    user.FollowingCount,
+			FollowerCount:  user.FollowerCount,
+			IsFollow:       false,
+			TotalFavorited: user.TotalFavorited,
+			WorkCount:      user.WorkCount,
+			FavoriteCount:  user.FavoriteCount,
+		})
+	}
+	response.StatusCode = 0
+	response.StatusMsg = "批量查询用户成功"
+	response.Users = userResult
+	return nil
+}

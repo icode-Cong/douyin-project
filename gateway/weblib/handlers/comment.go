@@ -1,47 +1,50 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
+	"context"
+	"gateway/services/commentService"
 	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
-type CommentListResponse struct {
-	Response
-	CommentList []Comment `json:"comment_list,omitempty"`
-}
+func CommentAction(ginCtx *gin.Context) {
+	var commentReq commentService.DouyinCommentActionRequest
+	//获取request的信息
+	commentReq.CommentId, _ = strconv.ParseInt(ginCtx.Query("comment_id"), 10, 64)
+	commentReq.CommentText = ginCtx.Query("comment_text")
+	actionType, _ := strconv.Atoi(ginCtx.Query("action_type"))
+	commentReq.ActionType = int32(actionType)
+	commentReq.Token = ginCtx.Query("token")
+	commentReq.VideoId, _ = strconv.ParseInt(ginCtx.Query("video_id"), 10, 64)
 
-type CommentActionResponse struct {
-	Response
-	Comment Comment `json:"comment,omitempty"`
-}
+	// 从gin.Key中取出服务实例
+	commentServiceInstance := ginCtx.Keys["commentService"].(commentService.CommentService)
+	//调用comment微服务，将context的上下文传入
+	commentResp, _ := commentServiceInstance.CommentAction(context.Background(), &commentReq)
 
-// CommentAction no practical effect, just check if token is valid
-func CommentAction(c *gin.Context) {
-	token := c.Query("token")
-	actionType := c.Query("action_type")
-
-	if user, exist := usersLoginInfo[token]; exist {
-		if actionType == "1" {
-			text := c.Query("comment_text")
-			c.JSON(http.StatusOK, CommentActionResponse{Response: Response{StatusCode: 0},
-				Comment: Comment{
-					Id:         1,
-					User:       user,
-					Content:    text,
-					CreateDate: "05-01",
-				}})
-			return
-		}
-		c.JSON(http.StatusOK, Response{StatusCode: 0})
-	} else {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-	}
-}
-
-// CommentList all videos have same demo comment list
-func CommentList(c *gin.Context) {
-	c.JSON(http.StatusOK, CommentListResponse{
-		Response:    Response{StatusCode: 0},
-		CommentList: DemoComments,
+	//返回
+	ginCtx.JSON(http.StatusOK, commentService.DouyinCommentActionResponse{
+		StatusCode: commentResp.StatusCode,
+		StatusMsg:  commentResp.StatusMsg,
+		Comment:    commentResp.Comment,
 	})
+
+}
+func CommentList(ginCtx *gin.Context) {
+	var commentReq commentService.DouyinCommentListRequest
+
+	commentReq.Token = ginCtx.Query("token")
+	commentReq.VideoId, _ = strconv.ParseInt(ginCtx.Query("video_id"), 10, 64)
+
+	commentServiceInstance := ginCtx.Keys["commentService"].(commentService.CommentService)
+	commentResp, _ := commentServiceInstance.CommentList(context.Background(), &commentReq)
+
+	ginCtx.JSON(http.StatusOK, commentService.DouyinCommentListResponse{
+		StatusCode:  commentResp.StatusCode,
+		StatusMsg:   commentResp.StatusMsg,
+		CommentList: commentResp.CommentList,
+	})
+
 }

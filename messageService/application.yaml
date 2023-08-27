@@ -2,7 +2,7 @@ mysql:
   url: 172.19.0.12
   port: 3306
   username: root #your_mysql_userName
-  password: cc.+-0109 #your_mysql_passWord
+  password:  #your_mysql_passWord
   dbname: douyin
 
 oss:

@@ -46,6 +46,7 @@ type RelationService interface {
 	FollowList(ctx context.Context, in *DouyinRelationFollowListRequest, opts ...client.CallOption) (*DouyinRelationFollowListResponse, error)
 	FollowerList(ctx context.Context, in *DouyinRelationFollowerListRequest, opts ...client.CallOption) (*DouyinRelationFollowerListResponse, error)
 	FriendList(ctx context.Context, in *DouyinRelationFriendListRequest, opts ...client.CallOption) (*DouyinRelationFriendListResponse, error)
+	IsFollowed(ctx context.Context, in *IsFollowedRequest, opts ...client.CallOption) (*IsFollowedResponse, error)
 }
 
 type relationService struct {
@@ -100,6 +101,16 @@ func (c *relationService) FriendList(ctx context.Context, in *DouyinRelationFrie
 	return out, nil
 }
 
+func (c *relationService) IsFollowed(ctx context.Context, in *IsFollowedRequest, opts ...client.CallOption) (*IsFollowedResponse, error) {
+	req := c.c.NewRequest(c.name, "RelationService.IsFollowed", in)
+	out := new(IsFollowedResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for RelationService service
 
 type RelationServiceHandler interface {
@@ -107,6 +118,7 @@ type RelationServiceHandler interface {
 	FollowList(context.Context, *DouyinRelationFollowListRequest, *DouyinRelationFollowListResponse) error
 	FollowerList(context.Context, *DouyinRelationFollowerListRequest, *DouyinRelationFollowerListResponse) error
 	FriendList(context.Context, *DouyinRelationFriendListRequest, *DouyinRelationFriendListResponse) error
+	IsFollowed(context.Context, *IsFollowedRequest, *IsFollowedResponse) error
 }
 
 func RegisterRelationServiceHandler(s server.Server, hdlr RelationServiceHandler, opts ...server.HandlerOption) error {
@@ -115,6 +127,7 @@ func RegisterRelationServiceHandler(s server.Server, hdlr RelationServiceHandler
 		FollowList(ctx context.Context, in *DouyinRelationFollowListRequest, out *DouyinRelationFollowListResponse) error
 		FollowerList(ctx context.Context, in *DouyinRelationFollowerListRequest, out *DouyinRelationFollowerListResponse) error
 		FriendList(ctx context.Context, in *DouyinRelationFriendListRequest, out *DouyinRelationFriendListResponse) error
+		IsFollowed(ctx context.Context, in *IsFollowedRequest, out *IsFollowedResponse) error
 	}
 	type RelationService struct {
 		relationService
@@ -141,4 +154,8 @@ func (h *relationServiceHandler) FollowerList(ctx context.Context, in *DouyinRel
 
 func (h *relationServiceHandler) FriendList(ctx context.Context, in *DouyinRelationFriendListRequest, out *DouyinRelationFriendListResponse) error {
 	return h.RelationServiceHandler.FriendList(ctx, in, out)
+}
+
+func (h *relationServiceHandler) IsFollowed(ctx context.Context, in *IsFollowedRequest, out *IsFollowedResponse) error {
+	return h.RelationServiceHandler.IsFollowed(ctx, in, out)
 }

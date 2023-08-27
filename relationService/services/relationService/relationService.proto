@@ -119,9 +119,29 @@ message FriendUser {
     // @inject_tag: json:"msgType"
     int64 MsgType = 13; //message消息的类型，0 => 当前请求用户接收的消息， 1 => 当前请求用户发送的消息
 }
+
+message IsFollowedRequest {
+    // @inject_tag: json:"user_id", form:"user_id"
+    int64 UserId = 1; // 对方id
+    // @inject_tag: json:"token", form:"token"
+    string Token = 2; // 用户鉴权token
+}
+
+message IsFollowedResponse {
+    // @inject_tag: json:"status_code", form:"status_code"
+    int32 StatusCode = 1; // 状态码，0-成功，其他值-失败
+    // @inject_tag: json:"status_msg", form:"status_msg"
+    string StatusMsg = 2; // 返回状态描述
+    // @inject_tag: json:"is_follow", form:"is_follow"
+    bool IsFollow = 3; // true-已关注，false-未关注
+}
+
+
 service RelationService{
   rpc RelationAction(DouyinRelationActionRequest) returns (DouyinRelationActionResponse); //关注，取消关注
   rpc FollowList(DouyinRelationFollowListRequest) returns(DouyinRelationFollowListResponse); //关注列表
   rpc FollowerList(DouyinRelationFollowerListRequest) returns(DouyinRelationFollowerListResponse);//粉丝列表
   rpc FriendList(DouyinRelationFriendListRequest) returns(DouyinRelationFriendListResponse); //好友列表
+
+  rpc IsFollowed(IsFollowedRequest) returns(IsFollowedResponse); // 用于微服务间请求关注状态
 }

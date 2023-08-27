@@ -45,6 +45,12 @@ type UserService interface {
 	Login(ctx context.Context, in *DouyinUserLoginRequest, opts ...client.CallOption) (*DouyinUserLoginResponse, error)
 	Register(ctx context.Context, in *DouyinUserRegisterRequest, opts ...client.CallOption) (*DouyinUserRegisterResponse, error)
 	UserInfo(ctx context.Context, in *DouyinUserRequest, opts ...client.CallOption) (*DouyinUserResponse, error)
+	UpdateFollowCount(ctx context.Context, in *DouyinUpdateFollowCountRequest, opts ...client.CallOption) (*DouyinUpdateFollowCountResponse, error)
+	UpdateFollowerCount(ctx context.Context, in *DouyinUpdateFollowerCountRequest, opts ...client.CallOption) (*DouyinUpdateFollowerCountResponse, error)
+	UpdateTotalFavorited(ctx context.Context, in *DouyinUpdateTotalFavoritedRequest, opts ...client.CallOption) (*DouyinUpdateTotalFavoritedResponse, error)
+	UpdateFavoriteCount(ctx context.Context, in *DouyinUpdateFavoriteCountRequest, opts ...client.CallOption) (*DouyinUpdateFavoriteCountResponse, error)
+	UpdateWorkCount(ctx context.Context, in *DouyinUpdateWorkCountRequest, opts ...client.CallOption) (*DouyinUpdateWorkCountResponse, error)
+	MultiUserInfo(ctx context.Context, in *DouyinMultiUserInfoRequest, opts ...client.CallOption) (*DouyinMultiUserInfoResponse, error)
 }
 
 type userService struct {
@@ -89,12 +95,78 @@ func (c *userService) UserInfo(ctx context.Context, in *DouyinUserRequest, opts 
 	return out, nil
 }
 
+func (c *userService) UpdateFollowCount(ctx context.Context, in *DouyinUpdateFollowCountRequest, opts ...client.CallOption) (*DouyinUpdateFollowCountResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.UpdateFollowCount", in)
+	out := new(DouyinUpdateFollowCountResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) UpdateFollowerCount(ctx context.Context, in *DouyinUpdateFollowerCountRequest, opts ...client.CallOption) (*DouyinUpdateFollowerCountResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.UpdateFollowerCount", in)
+	out := new(DouyinUpdateFollowerCountResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) UpdateTotalFavorited(ctx context.Context, in *DouyinUpdateTotalFavoritedRequest, opts ...client.CallOption) (*DouyinUpdateTotalFavoritedResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.UpdateTotalFavorited", in)
+	out := new(DouyinUpdateTotalFavoritedResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) UpdateFavoriteCount(ctx context.Context, in *DouyinUpdateFavoriteCountRequest, opts ...client.CallOption) (*DouyinUpdateFavoriteCountResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.UpdateFavoriteCount", in)
+	out := new(DouyinUpdateFavoriteCountResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) UpdateWorkCount(ctx context.Context, in *DouyinUpdateWorkCountRequest, opts ...client.CallOption) (*DouyinUpdateWorkCountResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.UpdateWorkCount", in)
+	out := new(DouyinUpdateWorkCountResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) MultiUserInfo(ctx context.Context, in *DouyinMultiUserInfoRequest, opts ...client.CallOption) (*DouyinMultiUserInfoResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.MultiUserInfo", in)
+	out := new(DouyinMultiUserInfoResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for UserService service
 
 type UserServiceHandler interface {
 	Login(context.Context, *DouyinUserLoginRequest, *DouyinUserLoginResponse) error
 	Register(context.Context, *DouyinUserRegisterRequest, *DouyinUserRegisterResponse) error
 	UserInfo(context.Context, *DouyinUserRequest, *DouyinUserResponse) error
+	UpdateFollowCount(context.Context, *DouyinUpdateFollowCountRequest, *DouyinUpdateFollowCountResponse) error
+	UpdateFollowerCount(context.Context, *DouyinUpdateFollowerCountRequest, *DouyinUpdateFollowerCountResponse) error
+	UpdateTotalFavorited(context.Context, *DouyinUpdateTotalFavoritedRequest, *DouyinUpdateTotalFavoritedResponse) error
+	UpdateFavoriteCount(context.Context, *DouyinUpdateFavoriteCountRequest, *DouyinUpdateFavoriteCountResponse) error
+	UpdateWorkCount(context.Context, *DouyinUpdateWorkCountRequest, *DouyinUpdateWorkCountResponse) error
+	MultiUserInfo(context.Context, *DouyinMultiUserInfoRequest, *DouyinMultiUserInfoResponse) error
 }
 
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
@@ -102,6 +174,12 @@ func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts .
 		Login(ctx context.Context, in *DouyinUserLoginRequest, out *DouyinUserLoginResponse) error
 		Register(ctx context.Context, in *DouyinUserRegisterRequest, out *DouyinUserRegisterResponse) error
 		UserInfo(ctx context.Context, in *DouyinUserRequest, out *DouyinUserResponse) error
+		UpdateFollowCount(ctx context.Context, in *DouyinUpdateFollowCountRequest, out *DouyinUpdateFollowCountResponse) error
+		UpdateFollowerCount(ctx context.Context, in *DouyinUpdateFollowerCountRequest, out *DouyinUpdateFollowerCountResponse) error
+		UpdateTotalFavorited(ctx context.Context, in *DouyinUpdateTotalFavoritedRequest, out *DouyinUpdateTotalFavoritedResponse) error
+		UpdateFavoriteCount(ctx context.Context, in *DouyinUpdateFavoriteCountRequest, out *DouyinUpdateFavoriteCountResponse) error
+		UpdateWorkCount(ctx context.Context, in *DouyinUpdateWorkCountRequest, out *DouyinUpdateWorkCountResponse) error
+		MultiUserInfo(ctx context.Context, in *DouyinMultiUserInfoRequest, out *DouyinMultiUserInfoResponse) error
 	}
 	type UserService struct {
 		userService
@@ -124,4 +202,28 @@ func (h *userServiceHandler) Register(ctx context.Context, in *DouyinUserRegiste
 
 func (h *userServiceHandler) UserInfo(ctx context.Context, in *DouyinUserRequest, out *DouyinUserResponse) error {
 	return h.UserServiceHandler.UserInfo(ctx, in, out)
+}
+
+func (h *userServiceHandler) UpdateFollowCount(ctx context.Context, in *DouyinUpdateFollowCountRequest, out *DouyinUpdateFollowCountResponse) error {
+	return h.UserServiceHandler.UpdateFollowCount(ctx, in, out)
+}
+
+func (h *userServiceHandler) UpdateFollowerCount(ctx context.Context, in *DouyinUpdateFollowerCountRequest, out *DouyinUpdateFollowerCountResponse) error {
+	return h.UserServiceHandler.UpdateFollowerCount(ctx, in, out)
+}
+
+func (h *userServiceHandler) UpdateTotalFavorited(ctx context.Context, in *DouyinUpdateTotalFavoritedRequest, out *DouyinUpdateTotalFavoritedResponse) error {
+	return h.UserServiceHandler.UpdateTotalFavorited(ctx, in, out)
+}
+
+func (h *userServiceHandler) UpdateFavoriteCount(ctx context.Context, in *DouyinUpdateFavoriteCountRequest, out *DouyinUpdateFavoriteCountResponse) error {
+	return h.UserServiceHandler.UpdateFavoriteCount(ctx, in, out)
+}
+
+func (h *userServiceHandler) UpdateWorkCount(ctx context.Context, in *DouyinUpdateWorkCountRequest, out *DouyinUpdateWorkCountResponse) error {
+	return h.UserServiceHandler.UpdateWorkCount(ctx, in, out)
+}
+
+func (h *userServiceHandler) MultiUserInfo(ctx context.Context, in *DouyinMultiUserInfoRequest, out *DouyinMultiUserInfoResponse) error {
+	return h.UserServiceHandler.MultiUserInfo(ctx, in, out)
 }

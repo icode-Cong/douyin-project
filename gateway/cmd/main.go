@@ -2,8 +2,12 @@ package main
 
 import (
 	"fmt"
+	"gateway/services/commentService"
+	"gateway/services/favoriteService"
 	"gateway/services/feedService"
+	"gateway/services/messageService"
 	"gateway/services/publishService"
+	"gateway/services/relationService"
 	"gateway/services/user"
 	"gateway/weblib"
 	"gateway/wrappers"
@@ -42,10 +46,42 @@ func main() {
 	)
 	feedService := feedService.NewFeedService("feedService", feedMicroService.Client())
 
+	// message 消息微服务
+	messageMicroService := micro.NewService(
+		micro.Name("messageService.client"),
+		micro.WrapClient(wrappers.NewMessageWrapper),
+	)
+	messageService := messageService.NewMessageService("messageService", messageMicroService.Client())
+
+	// relation 关注微服务
+	relationMicroService := micro.NewService(
+		micro.Name("relationService.client"),
+		micro.WrapClient(wrappers.NewRelationWrapper),
+	)
+	relationService := relationService.NewRelationService("relationService", relationMicroService.Client())
+
+	// favorite 点赞微服务
+	favoriteMicroService := micro.NewService(
+		micro.Name("favoriteService.client"),
+		micro.WrapClient(wrappers.NewFavoriteWrapper),
+	)
+	favoriteService := favoriteService.NewFavoriteService("favoriteService", favoriteMicroService.Client())
+
+	// comment 评论微服务
+	commentMicroService := micro.NewService(
+		micro.Name("commentService.client"),
+		micro.WrapClient(wrappers.NewCommentWrapper),
+	)
+	commentService := commentService.NewCommentService("commentService", commentMicroService.Client())
+
 	serviceMap := make(map[string]interface{})
 	serviceMap["userService"] = userService
 	serviceMap["publishService"] = publishService
 	serviceMap["feedService"] = feedService
+	serviceMap["messageService"] = messageService
+	serviceMap["relationService"] = relationService
+	serviceMap["favoriteService"] = favoriteService
+	serviceMap["commentService"] = commentService
 
 	server := web.NewService(
 		web.Name("httpService"),

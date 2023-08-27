@@ -64,23 +64,127 @@ message DouyinUserLoginResponse {
 }
 
 message DouyinUserRequest {
-    // @inject_tag: json:"uid", form:"uid"
+    // @inject_tag: json:"user_id", form:"user_id"
     int64 UserId = 1; 
-    // @inject_tag: json:"utoken", form:"utoken"
+    // @inject_tag: json:"token", form:"token"
     string Token = 2; 
-  }
+}
   
-  message DouyinUserResponse {
+message DouyinUserResponse {
     // @inject_tag: json:"status_code", form:"status_code"
     int32 StatusCode = 1; 
     // @inject_tag: json:"status_msg", form:"status_msg"
     string StatusMsg = 2; 
     // @inject_tag: json:"user", form:"user"
     User User = 3; 
-  }
+}
+
+message DouyinUpdateFollowCountRequest {
+  // @inject_tag: json:"user_id", form:"user_id"
+  int64 UserId = 1;//用户id
+  // @inject_tag: json:"count", form:"count"
+  int64 Count = 2;//变化的数量
+  // @inject_tag: json:"action_type", form:"action_type"
+  int64 ActionType = 3; //1是增加，2是减少
+}
+
+message DouyinUpdateFollowCountResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; 
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; 
+}
+
+message DouyinUpdateFollowerCountRequest {
+  // @inject_tag: json:"user_id", form:"user_id"
+  int64 UserId = 1;//用户id
+  // @inject_tag: json:"count", form:"count"
+  int64 Count = 2;//变化的数量
+  // @inject_tag: json:"action_type", form:"action_type"
+  int64 ActionType = 3; //1是增加，2是减少
+}
+
+message DouyinUpdateFollowerCountResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; 
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; 
+}
+
+message DouyinUpdateTotalFavoritedRequest {
+  // @inject_tag: json:"user_id", form:"user_id"
+  int64 UserId = 1;//用户id
+  // @inject_tag: json:"count", form:"count"
+  int64 Count = 2;//变化的数量
+  // @inject_tag: json:"action_type", form:"action_type"
+  int64 ActionType = 3; //1是增加，2是减少
+}
+
+message DouyinUpdateTotalFavoritedResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; 
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; 
+}
+
+message DouyinUpdateFavoriteCountRequest {
+  // @inject_tag: json:"user_id", form:"user_id"
+  int64 UserId = 1;//用户id
+  // @inject_tag: json:"count", form:"count"
+  int64 Count = 2;//变化的数量
+  // @inject_tag: json:"action_type", form:"action_type"
+  int64 ActionType = 3; //1是增加，2是减少
+}
+
+message DouyinUpdateFavoriteCountResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; 
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; 
+}
+
+message DouyinUpdateWorkCountRequest {
+  // @inject_tag: json:"user_id", form:"user_id"
+  int64 UserId = 1;//用户id
+  // @inject_tag: json:"count", form:"count"
+  int64 Count = 2;//变化的数量
+  // @inject_tag: json:"action_type", form:"action_type"
+  int64 ActionType = 3; //1是增加，2是减少
+}
+
+message DouyinUpdateWorkCountResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; 
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; 
+}
+
+message DouyinMultiUserInfoRequest {
+  // @inject_tag: json:"user_ids", form:"user_ids"
+  repeated int64 UserId = 1; 
+}
+
+message DouyinMultiUserInfoResponse {
+  // @inject_tag: json:"status_code", form:"status_code"
+  int32 StatusCode = 1; 
+  // @inject_tag: json:"status_msg", form:"status_msg"
+  string StatusMsg = 2; 
+  // @inject_tag: json:"users", form:"users"
+  repeated User Users = 3; 
+}
 
 service UserService {
     rpc Login(DouyinUserLoginRequest) returns(DouyinUserLoginResponse);
     rpc Register(DouyinUserRegisterRequest) returns(DouyinUserRegisterResponse);
     rpc UserInfo(DouyinUserRequest) returns(DouyinUserResponse);
+
+    rpc UpdateFollowCount(DouyinUpdateFollowCountRequest) returns(DouyinUpdateFollowCountResponse);
+    rpc UpdateFollowerCount(DouyinUpdateFollowerCountRequest) returns(DouyinUpdateFollowerCountResponse);
+
+    rpc UpdateTotalFavorited(DouyinUpdateTotalFavoritedRequest) returns(DouyinUpdateTotalFavoritedResponse);
+    rpc UpdateFavoriteCount(DouyinUpdateFavoriteCountRequest) returns(DouyinUpdateFavoriteCountResponse);
+
+    rpc UpdateWorkCount(DouyinUpdateWorkCountRequest) returns(DouyinUpdateWorkCountResponse);
+
+    rpc MultiUserInfo(DouyinMultiUserInfoRequest) returns(DouyinMultiUserInfoResponse);
 }
