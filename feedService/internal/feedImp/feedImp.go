@@ -3,7 +3,7 @@ package feedImp
 import (
 	"context"
 	"feedService/models"
-	"feedService/rpc_server"
+	rpcClients "feedService/rpcClients"
 	"feedService/services/feedService"
 	"fmt"
 
@@ -42,7 +42,7 @@ func (*FeedService) Feed(ctx context.Context, req *feedService.DouyinFeedRequest
 	if true {
 		for _, video := range videos {
 			authorId := video.UserId
-			author, _ := rpc_server.GetUserInfo(authorId, req.Token)
+			author, _ := rpcClients.GetUserInfo(authorId, req.Token)
 			authors = append(authors, author)
 		}
 		for _, video := range videos {
