@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -15,7 +14,6 @@ const DRIVER = "mysql"
 var SqlSession *gorm.DB
 
 var Ctx = context.Background()
-var RedisSession *redis.Client
 
 func InitMySQL(dsn string) (err error) {
 	db, err := gorm.Open(DRIVER, dsn)
@@ -45,12 +43,4 @@ func CloseMySQL() {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func InitRedis() {
-	RedisSession = redis.NewClient(&redis.Options{
-		Addr:     "172.19.0.11:6379",
-		Password: "",
-		DB:       0,
-	})
 }
