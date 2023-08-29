@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"os"
 	"publishService/models"
+	"time"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	"github.com/jinzhu/gorm"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,13 +32,16 @@ type GlobalConfig struct {
 	OssConf   OssConfig   `yaml:"oss"`
 }
 
-// 初始化一个ossClient
+// 初始化ossClient
 var OssClient *oss.Client
 
 // 初始化redis对象
 var RedisSession *redis.Client
 
-var conf GlobalConfig
+// 初始化mysql对象
+var SqlSession *gorm.DB
+
+var Conf GlobalConfig
 
 func (c *GlobalConfig) getConf() *GlobalConfig {
 	yamlFile, err := os.ReadFile("application.yaml")
@@ -50,7 +56,7 @@ func (c *GlobalConfig) getConf() *GlobalConfig {
 }
 
 func Init() {
-	conf.getConf()
+	Conf.getConf()
 	InitMysql()
 	InitOssClient()
 	InitRedis()
@@ -64,7 +70,7 @@ func InitRedis() {
 	})
 }
 func InitMysql() {
-	mysqlConf := conf.MySQLConf
+	mysqlConf := Conf.MySQLConf
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		mysqlConf.Username,
 		mysqlConf.Password,
@@ -72,13 +78,32 @@ func InitMysql() {
 		mysqlConf.Port,
 		mysqlConf.DBName,
 	)
-	err := models.InitMySQL(dsn)
+	db, err := gorm.Open("mysql", dsn)
+	if err != nil {
+		panic(err)
+	}
+	db.LogMode(true)
+	if gin.Mode() == "release" {
+		db.LogMode(false)
+	}
+	//默认不加复数
+	db.SingularTable(true)
+	//设置连接池
+	//空闲
+	db.DB().SetMaxIdleConns(20)
+	//打开
+	db.DB().SetMaxOpenConns(100)
+	//超时
+	db.DB().SetConnMaxLifetime(time.Second * 30)
+	SqlSession = db
+	models.InitMySQL(SqlSession)
+	err = SqlSession.DB().Ping()
 	if err != nil {
 		panic(err)
 	}
 }
 func InitOssClient() {
-	ossConf := conf.OssConf
+	ossConf := Conf.OssConf
 	client, err := oss.New(ossConf.Endpoint, ossConf.AccessKeyID, ossConf.AccessKeySecret)
 	if err != nil {
 		fmt.Println("Error:", err)
