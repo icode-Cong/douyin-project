@@ -32,12 +32,12 @@ func (*PublishService) Publish(ctx context.Context, request *publishService.Douy
 	// 使用 uuid 为视频生成一个随机的文件名,并构造其在 OSS 上的 url
 	videoUUID, _ := uuid.NewV4()
 	videoPath := time.Now().Format("2006-01-02") + "/" + videoUUID.String() + ".mp4"
-	videoUrl := "https://" + configs.Conf.OssConf.BucketName + "." + configs.Conf.OssConf.Endpoint + videoPath
+	videoUrl := "https://" + configs.Conf.OssConf.BucketName + "." + configs.Conf.OssConf.Endpoint + "/" + videoPath
 
 	// 使用 uuid 为视频封面生成一个随机的文件名,并构造其在 OSS 上的 url
 	coverUUID, _ := uuid.NewV4()
 	coverPath := time.Now().Format("2006-01-02") + "/" + coverUUID.String() + ".jpg"
-	coverUrl := "https://" + configs.Conf.OssConf.BucketName + "." + configs.Conf.OssConf.Endpoint + coverPath
+	coverUrl := "https://" + configs.Conf.OssConf.BucketName + "." + configs.Conf.OssConf.Endpoint + "/" + coverPath
 
 	// 开一个协程来负责上传视频和封面,避免等待过久
 	go func() {
