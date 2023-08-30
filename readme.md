@@ -186,3 +186,7 @@ service UserService {
 }
 
 ```
+
+- task
+
+1. 各个微服务最后需要同步到servicesRepository
