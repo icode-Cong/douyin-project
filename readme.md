@@ -187,6 +187,10 @@ service UserService {
 
 ```
 
+## messageService
+
+不知道干啥的
+
 - task
 
 1. 各个微服务最后需要同步到servicesRepository
