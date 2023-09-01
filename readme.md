@@ -34,8 +34,8 @@ service FeedService{
 
 - 未实现
 
-1. 返回is_favorite默认false
-2. 返回用户信息：avatar，background_image，signature
+1. 返回用户信息：avatar，background_image，signature
+2. 点赞数不对？
 
 ## favoriteService
 
@@ -58,10 +58,6 @@ service FavoriteService {
     rpc FavoriteList(DouyinFavoriteListRequest) returns(DouyinFavoriteListResponse);
 }
 ```
-
-- 未实现
-
-1. 查询userId是否点赞videoId(api)
 
 ## publishService
 
