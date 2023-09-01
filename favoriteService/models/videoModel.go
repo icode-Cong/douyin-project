@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type Video struct {
@@ -77,7 +79,7 @@ func (*VideoDao) GetVideosByTime(date *string, limit int) []*Video {
 }
 
 func (*VideoDao) AddFavoriteCount(videoId int64, count int32) {
-	err := SqlSession.Model(Video{}).Where("video_id= ? ", videoId).Update("Favorite_count+?", count).Error
+	err := SqlSession.Model(Video{}).Where("video_id= ? ", videoId).Update("favorite_count", gorm.Expr("favorite_count+?", count)).Error
 	if err != nil {
 		//log.Error(err)
 	}

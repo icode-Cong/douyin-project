@@ -33,7 +33,10 @@ func (f *FavoriteDao) IsFavorite(userId int64, videoId int64) bool {
 	var rec Favorite
 	result := SqlSession.Where("User_id = ? and Video_id = ?", userId, videoId).Limit(1).Find(&rec)
 	err := result.Error
-	return err != nil
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 // 根据UserId获取关注视频Id列表

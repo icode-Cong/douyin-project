@@ -38,6 +38,7 @@ func (*FavoriteService) FavoriteAction(ctx context.Context, request *favoriteSer
 	}
 	if actionType == 1 {
 		_ = models.NewFavoriteDaoInstance().CreateFavorite(favorite)
+		models.NewVideoDaoInstance().AddFavoriteCount(videoId, 1)
 		rpcClients.UpdateFavoriteCount(loginUserId, 1, int64(actionType))
 		rpcClients.UpdateFavoritedCount(authorId, 1, int64(actionType))
 		response.StatusCode = 0
@@ -45,6 +46,7 @@ func (*FavoriteService) FavoriteAction(ctx context.Context, request *favoriteSer
 		return nil
 	} else if actionType == 2 {
 		_ = models.NewFavoriteDaoInstance().DeleteFavorite(favorite)
+		models.NewVideoDaoInstance().AddFavoriteCount(videoId, -1)
 		rpcClients.UpdateFavoriteCount(loginUserId, 1, int64(actionType))
 		rpcClients.UpdateFavoritedCount(authorId, 1, int64(actionType))
 		response.StatusCode = 0
