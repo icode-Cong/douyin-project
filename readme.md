@@ -35,7 +35,6 @@ service FeedService{
 - 未实现
 
 1. 返回用户信息：avatar，background_image，signature
-2. 点赞数不对？
 
 ## favoriteService
 
