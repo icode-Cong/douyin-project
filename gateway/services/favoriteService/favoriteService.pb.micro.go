@@ -44,6 +44,7 @@ func NewFavoriteServiceEndpoints() []*api.Endpoint {
 type FavoriteService interface {
 	FavoriteAction(ctx context.Context, in *DouyinFavoriteActionRequest, opts ...client.CallOption) (*DouyinFavoriteActionResponse, error)
 	FavoriteList(ctx context.Context, in *DouyinFavoriteListRequest, opts ...client.CallOption) (*DouyinFavoriteListResponse, error)
+	IsFavorite(ctx context.Context, in *DouyinIsFavoriteRequest, opts ...client.CallOption) (*DouyinIsFavoriteResponse, error)
 }
 
 type favoriteService struct {
@@ -78,17 +79,29 @@ func (c *favoriteService) FavoriteList(ctx context.Context, in *DouyinFavoriteLi
 	return out, nil
 }
 
+func (c *favoriteService) IsFavorite(ctx context.Context, in *DouyinIsFavoriteRequest, opts ...client.CallOption) (*DouyinIsFavoriteResponse, error) {
+	req := c.c.NewRequest(c.name, "FavoriteService.IsFavorite", in)
+	out := new(DouyinIsFavoriteResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for FavoriteService service
 
 type FavoriteServiceHandler interface {
 	FavoriteAction(context.Context, *DouyinFavoriteActionRequest, *DouyinFavoriteActionResponse) error
 	FavoriteList(context.Context, *DouyinFavoriteListRequest, *DouyinFavoriteListResponse) error
+	IsFavorite(context.Context, *DouyinIsFavoriteRequest, *DouyinIsFavoriteResponse) error
 }
 
 func RegisterFavoriteServiceHandler(s server.Server, hdlr FavoriteServiceHandler, opts ...server.HandlerOption) error {
 	type favoriteService interface {
 		FavoriteAction(ctx context.Context, in *DouyinFavoriteActionRequest, out *DouyinFavoriteActionResponse) error
 		FavoriteList(ctx context.Context, in *DouyinFavoriteListRequest, out *DouyinFavoriteListResponse) error
+		IsFavorite(ctx context.Context, in *DouyinIsFavoriteRequest, out *DouyinIsFavoriteResponse) error
 	}
 	type FavoriteService struct {
 		favoriteService
@@ -107,4 +120,8 @@ func (h *favoriteServiceHandler) FavoriteAction(ctx context.Context, in *DouyinF
 
 func (h *favoriteServiceHandler) FavoriteList(ctx context.Context, in *DouyinFavoriteListRequest, out *DouyinFavoriteListResponse) error {
 	return h.FavoriteServiceHandler.FavoriteList(ctx, in, out)
+}
+
+func (h *favoriteServiceHandler) IsFavorite(ctx context.Context, in *DouyinIsFavoriteRequest, out *DouyinIsFavoriteResponse) error {
+	return h.FavoriteServiceHandler.IsFavorite(ctx, in, out)
 }

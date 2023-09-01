@@ -93,7 +93,7 @@ message DouyinIsFavoriteResponse{
 service FavoriteService {
     rpc FavoriteAction(DouyinFavoriteActionRequest) returns(DouyinFavoriteActionResponse);
     rpc FavoriteList(DouyinFavoriteListRequest) returns(DouyinFavoriteListResponse);
-    rpc IsFavorite(DouyinFavoriteListRequest) returns(DouyinFavoriteListResponse);
+    rpc IsFavorite(DouyinIsFavoriteRequest) returns(DouyinIsFavoriteResponse);
 }
 
 /*

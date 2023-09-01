@@ -31,6 +31,13 @@ func (*FeedService) Feed(ctx context.Context, req *feedService.DouyinFeedRequest
 	}
 	latestTime := t.Format(format)
 	fmt.Printf("查询时间 %v\n", latestTime)
+	//获得登录用户Id
+	loginUserId, err := rpcClients.GetIdByToken(req.Token)
+	isLogin := true
+	if err != nil {
+		isLogin = false
+		fmt.Printf("获取登录用户Id失败，userToken:%v", req.Token)
+	}
 
 	// 从数据库中按时间查询视频列表
 	videos := models.NewVideoDaoInstance().GetVideosByTime(&latestTime, 5)
@@ -48,7 +55,11 @@ func (*FeedService) Feed(ctx context.Context, req *feedService.DouyinFeedRequest
 		for _, video := range videos {
 			for _, user := range authors {
 				if video.UserId == user.Id {
-					videoResult = append(videoResult, BuildProtoVideo(video, user, false))
+					isFavorite := false
+					if isLogin {
+						isFavorite, _ = rpcClients.IsFavorite(loginUserId, video.VideoId)
+					}
+					videoResult = append(videoResult, BuildProtoVideo(video, user, isFavorite))
 					break
 				}
 			}

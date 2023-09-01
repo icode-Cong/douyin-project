@@ -96,6 +96,13 @@ func (*FavoriteService) FavoriteList(ctx context.Context, request *favoriteServi
 	response.VideoList = videoList
 	return nil
 }
+func (*FavoriteService) IsFavorite(ctx context.Context, request *favoriteService.DouyinIsFavoriteRequest, response *favoriteService.DouyinIsFavoriteResponse) error {
+	userId := request.UserId
+	videoId := request.VideoId
+	isFav := models.NewFavoriteDaoInstance().IsFavorite(userId, videoId)
+	response.IsFavorite = isFav
+	return nil
+}
 
 func BuildVideo(video *publishService.Video) *favoriteService.Video {
 	return &favoriteService.Video{

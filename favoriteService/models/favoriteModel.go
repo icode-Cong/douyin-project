@@ -29,16 +29,14 @@ func NewFavoriteDaoInstance() *FavoriteDao {
 }
 
 // 查询是否存在user点赞video的记录
-func (f *FavoriteDao) IsFavorite(userId int64, VideoId int64) (bool, error) {
-	ret := false
+func (f *FavoriteDao) IsFavorite(userId int64, videoId int64) bool {
 	var rec Favorite
-	result := SqlSession.Where("User_id = ? and Video_id = ?", userId, VideoId).Find(rec)
+	result := SqlSession.Where("User_id = ? and Video_id = ?", userId, videoId).Limit(1).Find(&rec)
 	err := result.Error
 	if err != nil {
-		return ret, err
+		return false
 	}
-	ret = true
-	return ret, err
+	return true
 }
 
 // 根据UserId获取关注视频Id列表
