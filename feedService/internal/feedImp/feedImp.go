@@ -68,7 +68,8 @@ func (*FeedService) Feed(ctx context.Context, req *feedService.DouyinFeedRequest
 	if len(videos) > 0 {
 		resp.NextTime = videos[len(videos)-1].CreateAt.Unix()
 	} else {
-		resp.NextTime = time.Now().Unix()
+		//修改为app传来的参数，防止获取视频重复
+		resp.NextTime = t.Unix()
 	}
 	resp.StatusCode = 0
 	resp.StatusMsg = "查询视频成功"
