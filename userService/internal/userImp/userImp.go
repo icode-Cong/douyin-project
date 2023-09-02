@@ -3,11 +3,9 @@ package userImp
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"strconv"
 	"userService/models"
-	"userService/rpcClients"
 	"userService/services/userService"
 	"userService/utils/sha256"
 )
@@ -160,16 +158,7 @@ func (*UserService) UserInfo(ctx context.Context, request *userService.DouyinUse
 	// 查询成功
 	response.StatusCode = 0
 	response.StatusMsg = "查询用户信息成功"
-	isFollow := false
-	if request.Token != "" {
-		_, err := rpcClients.GetIdByToken(request.Token)
-		if err != nil {
-			fmt.Printf("解析token失败\n")
-		} else {
-			isFollow = true
-		}
-	}
-	response.User = BuildUser(user, isFollow)
+	response.User = BuildUser(user, false)
 	return nil
 }
 
